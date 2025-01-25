@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1 class="head">Rock Paper Scissors</h1>
+    <div class="score">
+      <p class="user score-tab">0</p>
+      <p class="tie score-tab"><span>0</span><br />Tie</p>
+      <p class="computer score-tab">0</p>
+    </div>
+    <div class="gameArea">
+      <div class="userArea">
+        <h2>Player</h2>
+        <i class="fa-solid fa-hand-fist u-hand"></i>
+        <p></p>
+      </div>
+      <div class="compArea">
+        <h2>Computer</h2>
+        <i class="fa-solid fa-hand-fist c-hand"></i>
+        <p></p>
+      </div>
+    </div>
+    <div class="choiceArea">
+      <div class="choiceMain">
+        <button class="choiceButton rock">
+          <i class="fa-solid fa-hand-back-fist"></i>Rock
+        </button>
+        <button class="choiceButton paper">
+          <i class="fa-solid fa-hand"></i>Paper
+        </button>
+        <button class="choiceButton scissors">
+          <i class="fa-solid fa-hand-scissors"></i>Scissors
+        </button>
+      </div>
+    </div>
+    <div class="result-section">
+      <p id="result">"You Win!! Paper covers the Rock"</p>
+      <button id="nextButton">Next <i class="fa-solid fa-repeat"></i></button>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
