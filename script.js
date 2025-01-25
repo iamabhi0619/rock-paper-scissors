@@ -4,14 +4,12 @@ let tie = 0;
 let t = ["rock", "paper", "scissors"];
 let namePlace = document.querySelector(".userArea h2");
 let name = null;
-// name = prompt("Enter Your Name..!!");
+name = prompt("Enter Your Name..!!");
 namePlace.innerHTML = `${name ? name : "Player"} `;
-
 
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
 
 const choiceButtons = document.querySelectorAll(".choiceButton");
 const choiceArea = document.querySelector(".choiceArea");
@@ -20,8 +18,8 @@ const compScore = document.querySelector(".score .computer");
 const tieScore = document.querySelector(".tie span");
 const resultArea = document.querySelector(".result-section");
 const nextBtn = document.querySelector("#nextButton");
-const userChoiceText = document.querySelector('.userArea p');
-const compChoiceText = document.querySelector('.compArea p');
+const userChoiceText = document.querySelector(".userArea p");
+const compChoiceText = document.querySelector(".compArea p");
 choiceButtons.forEach((button) => {
   button.addEventListener("click", function () {
     let userChoice = button.classList.contains("rock")
@@ -36,7 +34,7 @@ const checkResult = async (user_choice) => {
   choiceArea.style.display = "none";
   let comp_choice = t[Math.floor(Math.random() * 3)];
   await changeHand(user_choice, comp_choice);
-  
+
   if (user_choice === comp_choice) {
     document.getElementById("result").innerText = "It's a tie!";
     tie++;
@@ -95,6 +93,8 @@ nextBtn.addEventListener("click", () => {
   document.querySelector(".compArea i").classList =
     "fa-solid fa-hand-fist c-hand";
   document.querySelector(".compArea i").style.transform = "rotate(0deg)";
+  userChoiceText.innerHTML = "";
+  compChoiceText.innerHTML = "";
 });
 
 const changeHand = async (user_choice, comp_choice) => {
