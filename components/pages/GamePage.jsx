@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 // Import game components
 import ConnectionStatusSection from "@/components/game/ConnectionStatusSection";
 import RoomJoinSection from "@/components/game/RoomJoinSection";
-import AvailableRoomsSection from "@/components/game/AvailableRoomsSection";
 import RoomInfoSection from "@/components/game/RoomInfoSection";
 import GameControlsSection from "@/components/game/GameControlsSection";
 import GameFinishedSection from "@/components/game/GameFinishedSection";

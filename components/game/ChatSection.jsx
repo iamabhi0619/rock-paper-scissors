@@ -54,7 +54,7 @@ function ChatSection({ messages, onSendMessage }) {
       <CardContent className="flex-1 flex flex-col min-h-0 p-0">
         {/* Messages Area */}
         <div className="flex-1 px-4">
-          <ScrollArea ref={scrollAreaRef} className="h-full w-full">
+          <ScrollArea ref={scrollAreaRef} className="h-full w-full max-h-[400px]">
             <div className="space-y-2 py-4 px-2">
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-40">
@@ -97,7 +97,7 @@ function ChatSection({ messages, onSendMessage }) {
                           className={`relative px-4 py-1 w-full -space-y-2 text-sm break-words shadow-sm transition-all duration-200 group-hover:shadow-md ${isOwn
                             ? 'bg-primary text-primary-foreground rounded-2xl rounded-br-md'
                             : 'bg-card border text-card-foreground rounded-2xl rounded-bl-md'
-                            } ${!showAvatar && isOwn ? 'mr-8' : ''} ${!showAvatar && !isOwn ? 'ml-8' : ''}`}
+                            } ${!showAvatar && isOwn ? '' : ''} ${!showAvatar && !isOwn ? '' : ''}`}
                         >
                           <p className="leading-relaxed">{msg.message}</p>
                           {isLastInGroup && (
