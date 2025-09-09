@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build --turbopack",
-    "start": "node server.js",
+    "start": "NODE_ENV=production PORT=3004 node server.js",
     "lint": "biome check",
     "format": "biome format --write"
   },

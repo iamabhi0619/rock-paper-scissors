@@ -67,7 +67,7 @@ function GamePage() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="min-h-screen flex flex-col">
       <div className="max-w-7xl mx-auto w-full h-full flex flex-col pb-3">
         {/* Header */}
         <div className="text-center py-4 flex-shrink-0">

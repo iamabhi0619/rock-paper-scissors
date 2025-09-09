@@ -27,7 +27,9 @@ app.prepare().then(() => {
 
   server.listen(port, (err) => {
     if (err) throw err;
-    console.log(`🚀 Server ready on http://${hostname}:${port}`);
+    console.log(
+      `🚀 Server ready on http://${hostname}:${port} in ${process.env.NODE_ENV} mode`,
+    );
     console.log(`⚡ Socket.IO server is running`);
   });
 });
