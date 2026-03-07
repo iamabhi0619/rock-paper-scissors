@@ -1,5 +1,4 @@
 const { createServer } = require("http");
-const { parse } = require("url");
 const next = require("next");
 const { setupSocketIO } = require("./server/socketConfig");
 
@@ -13,8 +12,7 @@ const handler = app.getRequestHandler();
 app.prepare().then(() => {
   const server = createServer(async (req, res) => {
     try {
-      const parsedUrl = parse(req.url, true);
-      await handler(req, res, parsedUrl);
+      await handler(req, res);
     } catch (err) {
       console.error("Error occurred handling", req.url, err);
       res.statusCode = 500;
