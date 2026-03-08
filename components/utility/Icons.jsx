@@ -1,7 +1,7 @@
 
 
 import { cn } from '@/lib/utils';
-import { IconRock, IconPaper, IconScissors, IconQuestionMark } from '@tabler/icons-react';
+import { IconScissors, IconQuestionMark, IconDiamond, IconBook } from '@tabler/icons-react';
 
 function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
 
@@ -13,8 +13,8 @@ function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
     // For simple type, use Tabler icons
     if (type === 'simple') {
         const iconMap = {
-            rock: IconRock,
-            paper: IconPaper,
+            rock: IconDiamond,
+            paper: IconBook,
             scissors: IconScissors
         };
         const IconComponent = iconMap[icon] || IconQuestionMark;
@@ -50,7 +50,7 @@ function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
                 </svg>
             )
         } else {
-            return <IconPaper className={className} {...props} />;
+            return <IconBook className={className} {...props} />;
         }
     } else if (icon === 'scissors') {
         if (type === 'solid') {

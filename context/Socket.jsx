@@ -19,10 +19,10 @@ export const useSocket = () => {
 };
 
 function Socket({ children }) {
-  const { user, isAuthenticated } = useUserStore();
+  const { user } = useUserStore();
 
   // Socket connection
-  const { socket, connected } = useSocketConnection(isAuthenticated, user);
+  const { socket, connected } = useSocketConnection(user);
 
   // Room events and state
   const {

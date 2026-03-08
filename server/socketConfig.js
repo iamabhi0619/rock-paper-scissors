@@ -1,5 +1,4 @@
 const { Server } = require("socket.io");
-const { authMiddleware } = require("./middleware/auth");
 const { setupRoomHandlers } = require("./handlers/roomHandlers");
 const { setupGameHandlers } = require("./handlers/gameHandlers");
 const { setupChatHandlers } = require("./handlers/chatHandlers");
@@ -15,8 +14,15 @@ function setupSocketIO(server) {
     },
   });
 
-  // Apply authentication middleware
-  io.use(authMiddleware);
+  // Basic validation middleware
+  io.use((socket, next) => {
+    const user = socket.handshake.auth.user;
+    if (!user) {
+      return next(new Error("User information required"));
+    }
+    socket.user = user;
+    next();
+  });
 
   io.on("connection", (socket) => {
 

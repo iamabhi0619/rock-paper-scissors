@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-export function useSocketConnection(isAuthenticated, user) {
+export function useSocketConnection(user) {
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
 
@@ -16,9 +16,7 @@ export function useSocketConnection(isAuthenticated, user) {
     const newSocket = io(process.env.NEXT_PUBLIC_BASE_URL,
       {
         auth: {
-          token: localStorage.getItem("token") || null,
           user: user,
-          isGuest: user.isGuest || false,
         },
         transports: ["websocket", "polling"],
       },
