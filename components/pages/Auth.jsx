@@ -1,5 +1,5 @@
 "use client";
-import { IconEye, IconEyeClosed } from "@tabler/icons-react";
+import { IconEye, IconEyeClosed, IconRocket } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -221,7 +221,9 @@ export default function AuthForm() {
               >
                 Contact Support
               </a>
-              <span className="text-primary">Social logins coming soon 🚀</span>
+              <span className="text-primary flex items-center gap-1">
+                Social logins coming soon <IconRocket className="h-4 w-4" />
+              </span>
             </div>
           </CardContent>
         </Card>

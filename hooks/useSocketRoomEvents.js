@@ -15,27 +15,29 @@ export function useSocketRoomEvents(socket) {
     socket.on("room_joined", (data) => {
       setCurrentRoom(data.room.id);
       setGameState(data.room);
-      toast.success(data.message);
+      // console.log("Joined room:", data.message);
     });
 
     socket.on("room_rejoined", (data) => {
       setCurrentRoom(data.room.id);
       setGameState(data.room);
-      toast.success(data.message);
+      // console.log("Rejoined room:", data.message);
     });
 
     socket.on("room_error", (data) => {
-      toast.error(data.message);
+      // console.error("Room error:", data.message);
+      toast.room(data.message || "Cannot join the room");
+      // Keep toast for errors as they need immediate attention
     });
 
     socket.on("player_left", (data) => {
       setGameState(data.room);
-      toast.warning(data.message);
+      // console.log("Player left:", data.message);
     });
 
     socket.on("player_disconnected", (data) => {
       setGameState(data.room);
-      toast.warning(data.message);
+      // console.log("Player disconnected:", data.message);
     });
 
     socket.on("room_created", () => {

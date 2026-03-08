@@ -9,9 +9,9 @@ import Icons from '@/components/utility/Icons';
 import { useUserStore } from '@/store/user';
 
 const CHOICE_CONFIG = {
-  rock: { emoji: '🪨', label: 'Rock' },
-  paper: { emoji: '📄', label: 'Paper' },
-  scissors: { emoji: '✂️', label: 'Scissors' }
+  rock: { label: 'Rock' },
+  paper: { label: 'Paper' },
+  scissors: { label: 'Scissors' }
 };
 
 function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
@@ -66,7 +66,7 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                 <p className="text-sm text-muted-foreground">Multiplayer Battle</p>
               </div>
             </div>
-            <Button variant="outline" onClick={onLeaveRoom} className="shrink-0">
+            <Button variant="outline" oanClick={onLeaveRoom} className="shrink-0">
               Leave Room
             </Button>
           </div>
@@ -74,14 +74,14 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
       </Card>
 
       {/* Players & Game Status */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 lg:grid-cols-3 sm:gap-4 gap-0 bg-card rounded-lg p-0 h-full">
         {/* Player 1 */}
         <motion.div variants={itemVariants}>
-          <Card className="h-full p-0">
-            <CardContent className="p-2">
+          <div className="h-full p-0">
+            <div className="p-2">
               <div className="text-center space-y-1">
-                <div className="flex items-center justify-center gap-1">
-                  <div className="p-1 rounded-full text-primary">
+                <div className="flex items-center justify-center">
+                  <div className="p-1 rounded-full text-primary hidden sm:block">
                     <IconUser className="h-6 w-6" />
                   </div>
                   <Badge variant="outline" className="text-xs">{'Player 1'}</Badge>
@@ -103,17 +103,17 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                   </span>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </motion.div>
 
         {/* Game Status */}
         <motion.div variants={itemVariants}>
-          <Card className="h-full p-0">
-            <CardContent className="p-2">
+          <div className="h-full p-0">
+            <div className="p-2">
               <div className="text-center space-y-2">
                 <div className="flex items-center justify-center gap-2">
-                  <div className="p-2 rounded-full bg-primary/20">
+                  <div className="p-2 rounded-full bg-primary/20 hidden sm:block">
                     <IconSwords className="h-4 w-4 text-primary" />
                   </div>
                   <Badge variant="outline" className="text-xs">Game Status</Badge>
@@ -134,17 +134,17 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                   </div>
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </motion.div>
 
         {/* Player 2 */}
         <motion.div variants={itemVariants}>
-          <Card className="h-full p-0">
-            <CardContent className="p-2">
+          <div className="h-full p-0">
+            <div className="p-2">
               <div className="text-center space-y-1">
                 <div className="flex items-center justify-center gap-2">
-                  <div className="p-1 rounded-full">
+                  <div className="p-1 rounded-full hidden sm:block">
                     <IconUser className="h-6 w-6 text-red-600 dark:text-red-400" />
                   </div>
                   <Badge variant="outline" className="text-xs">Player 2</Badge>
@@ -166,15 +166,15 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                   </span>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </motion.div>
       </div>
 
       {/* Last Result Section */}
       {gameState?.lastResult && (
         <motion.div variants={itemVariants}>
-          <Card className="bg-gradient-to-r from-muted/50 to-muted/30 p-0 py-1 gap-0">
+          <Card className="bg-linear-to-r from-muted/50 to-muted/30 p-0 py-1 gap-0">
             <CardHeader className="">
               <CardTitle className="text-center text-lg flex items-center justify-center gap-2">
                 <IconSwords className="h-5 w-5" />

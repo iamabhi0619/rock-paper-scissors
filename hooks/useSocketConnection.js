@@ -2,26 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { toast } from "sonner";
 
 export function useSocketConnection(isAuthenticated, user) {
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated || !user) {
+    if (!user) {
       return;
     }
 
     // Create socket connection
-    const newSocket = io(
-      process.env.NODE_ENV === "production"
-        ? process.env.NEXT_PUBLIC_BASE_URL
-        : "http://localhost:3000",
+    const newSocket = io(process.env.NEXT_PUBLIC_BASE_URL,
       {
         auth: {
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("token") || null,
           user: user,
+          isGuest: user.isGuest || false,
         },
         transports: ["websocket", "polling"],
       },
@@ -29,24 +26,21 @@ export function useSocketConnection(isAuthenticated, user) {
 
     // Connection events
     newSocket.on("connect", () => {
-      console.log("Connected to server");
       setConnected(true);
-      toast.success("Connected to game server!");
+      console.log("Connected to game server");
     });
 
     newSocket.on("disconnect", () => {
-      console.log("Disconnected from server");
       setConnected(false);
-      toast.error("Disconnected from game server");
+      console.log("Disconnected from game server");
     });
 
     newSocket.on("connect_error", (error) => {
       console.error("Connection error:", error);
-      toast.error("Failed to connect to game server");
+      setConnected(false);
     });
 
     newSocket.on("user_connected", (data) => {
-      console.log("User connected:", data);
     });
 
     setSocket(newSocket);
@@ -55,18 +49,18 @@ export function useSocketConnection(isAuthenticated, user) {
     return () => {
       newSocket.disconnect();
     };
-  }, [isAuthenticated, user]);
+  }, [user]);
 
-  // Handle socket cleanup when auth changes
+  // Handle socket cleanup when user changes
   useEffect(() => {
-    if (!isAuthenticated || !user) {
+    if (!user) {
       if (socket) {
         socket.disconnect();
         setSocket(null);
         setConnected(false);
       }
     }
-  }, [isAuthenticated, user, socket]);
+  }, [user, socket]);
 
   return { socket, connected };
 }

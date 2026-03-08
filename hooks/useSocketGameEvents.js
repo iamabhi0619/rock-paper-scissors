@@ -10,63 +10,37 @@ export function useSocketGameEvents(socket, user, setGameState) {
     // Game events
     socket.on("game_start", (data) => {
       setGameState(data.room);
-      toast.success("Game started! Make your choice.");
+      console.log("Game started:", data);
     });
 
     socket.on("choice_made", (data) => {
-      toast.success(`You chose ${data.choice}!`);
+      console.log("Choice made:", data.choice);
     });
 
     socket.on("opponent_chose", (data) => {
-      toast.info(data.message);
+      console.log("Opponent chose:", data.message);
     });
 
     socket.on("round_result", (data) => {
       setGameState(data.room);
-
-      if (data.winner === "tie") {
-        toast.info(data.message);
-      } else {
-        const isWinner =
-          (data.winner === "player1" && data.player1.name === user.name) ||
-          (data.winner === "player2" && data.player2.name === user.name);
-
-        if (isWinner) {
-          toast.success(data.message);
-        } else {
-          toast.error(data.message);
-        }
-      }
+      console.log("Round result:", data.message);
     });
 
     socket.on("game_state_updated", (data) => {
       setGameState(data.room);
       if (data.message) {
-        toast.info(data.message);
+        console.log("Game state updated:", data.message);
       }
     });
 
     socket.on("game_finished", (data) => {
       setGameState(data.room);
-
-      if (data.gameWinner === "tie") {
-        toast.info(data.finalMessage);
-      } else {
-        const isGameWinner =
-          (data.gameWinner === "player1" && data.player1.name === user.name) ||
-          (data.gameWinner === "player2" && data.player2.name === user.name);
-
-        if (isGameWinner) {
-          toast.success(data.finalMessage);
-        } else {
-          toast.error(data.finalMessage);
-        }
-      }
+      console.log("Game finished:", data.finalMessage);
     });
 
     socket.on("game_restarted", (data) => {
       setGameState(data.room);
-      toast.success(data.message);
+      console.log("Game restarted:", data.message);
     });
 
     socket.on("game_error", (data) => {

@@ -2,6 +2,18 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import api from "@/lib/api";
 
+// Helper function to generate guest user
+const generateGuestUser = () => {
+  const guestId = `guest_${Math.random().toString(36).substring(2, 11)}`;
+  const guestNumber = Math.floor(Math.random() * 9999);
+  return {
+    _id: guestId,
+    name: `Guest${guestNumber}`,
+    email: null,
+    isGuest: true,
+  };
+};
+
 export const useUserStore = create((set) => ({
   user: null,
   isAuthenticated: false,
@@ -101,22 +113,27 @@ export const useUserStore = create((set) => ({
   },
   fetchUser: async () => {
     if (!localStorage.getItem("token")) {
-      set({ user: null, isAuthenticated: false });
+      // Create guest user if no token
+      const guestUser = generateGuestUser();
+      set({ user: guestUser, isAuthenticated: true });
       return;
     }
     try {
       set({ loading: true, error: null });
       if (!localStorage.getItem("token")) {
-        set({ user: null, isAuthenticated: false });
+        const guestUser = generateGuestUser();
+        set({ user: guestUser, isAuthenticated: true });
         return;
       }
       const response = await api.get("/user/me");
-      set({ user: response.data.user, isAuthenticated: true });
+      set({ user: { ...response.data.user, isGuest: false }, isAuthenticated: true });
     } catch (error) {
       console.error("Fetch user error:", error);
       if (error.response?.status === 401) {
         localStorage.removeItem("token");
-        set({ user: null, isAuthenticated: false });
+        // Fallback to guest user on auth error
+        const guestUser = generateGuestUser();
+        set({ user: guestUser, isAuthenticated: true });
         return;
       }
       set({ error: error.response?.data?.message || "Failed to fetch user" });

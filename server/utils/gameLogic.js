@@ -115,8 +115,8 @@ function checkGameFinished(room) {
         gameWinner === "tie"
           ? "Game ended in a tie!"
           : gameWinner === "player1"
-            ? `🎉 ${room.players.player1.name} wins the game!`
-            : `🎉 ${room.players.player2.name} wins the game!`,
+            ? `${room.players.player1.name} wins the game!`
+            : `${room.players.player2.name} wins the game!`,
     };
   }
 

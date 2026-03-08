@@ -9,9 +9,7 @@ function setupSocketIO(server) {
   const io = new Server(server, {
     cors: {
       origin:
-        process.env.NODE_ENV === "production"
-          ? [process.env.NEXT_PUBLIC_BASE_URL]
-          : ["http://localhost:3000"],
+        [process.env.NEXT_PUBLIC_BASE_URL],
       methods: ["GET", "POST"],
       credentials: true,
     },
@@ -21,8 +19,6 @@ function setupSocketIO(server) {
   io.use(authMiddleware);
 
   io.on("connection", (socket) => {
-    console.log(`🔌 User ${socket.user.name} connected with socket ${socket.id}`);
-    console.log(`📝 User object:`, JSON.stringify(socket.user, null, 2));
 
     RoomManager.addUserSocket(socket.user._id, socket.id);
 
@@ -32,14 +28,11 @@ function setupSocketIO(server) {
       socketId: socket.id,
     });
 
-    console.log(`🎮 Setting up event handlers for ${socket.user.name}`);
-    
     // Setup event handlers
     setupRoomHandlers(socket, io);
     setupGameHandlers(socket, io);
     setupChatHandlers(socket, io);
 
-    console.log(`✅ Event handlers setup complete for ${socket.user.name}`);
   });
 
   return io;

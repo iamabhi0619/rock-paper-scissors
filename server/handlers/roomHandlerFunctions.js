@@ -3,11 +3,9 @@ const { createRoom } = require("../utils/gameLogic");
 
 // Handle joining a room
 function handleJoinRoom(socket, io, roomId) {
-  console.log(`User ${socket.user.name} is trying to join room ${roomId}`);
   
   try {
     const room = RoomManager.getRoom(roomId);
-    console.log(room);
 
     if (!room) {
       return handleCreateNewRoom(socket, roomId);
@@ -124,7 +122,6 @@ function handleGetRooms(socket) {
 
 // Handle disconnect for rooms
 function handleDisconnect(socket) {
-  console.log(`User ${socket.user.name} disconnected`);
 
   // Remove from user mapping
   RoomManager.removeUserSocket(socket.user._id);

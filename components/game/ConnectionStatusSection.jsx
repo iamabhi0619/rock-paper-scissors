@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Logo from '@/components/Logo';
@@ -8,6 +9,17 @@ import Link from 'next/link';
 
 function ConnectionStatusSection({ connected }) {
   if (connected) return null;
+
+  // Generate fixed random positions once to avoid hydration mismatch
+  const floatingElements = useMemo(() => 
+    Array.from({ length: 6 }, (_, i) => ({
+      id: i,
+      left: [84.56, 35.45, 83.38, 90.28, 79.52, 98.78][i],
+      top: [82.99, 50.37, 94.01, 98.83, 12.89, 15.98][i],
+      duration: 3 + (i * 0.5),
+      delay: i * 0.3,
+    }))
+  , []);
 
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -160,13 +172,13 @@ function ConnectionStatusSection({ connected }) {
           className="absolute inset-0 -z-10 overflow-hidden pointer-events-none"
           variants={itemVariants}
         >
-          {[...Array(6)].map((_, i) => (
+          {floatingElements.map((element) => (
             <motion.div
-              key={`floating-${i}-${Math.random()}`}
+              key={`floating-${element.id}`}
               className="absolute w-2 h-2 bg-muted/20 rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${element.left}%`,
+                top: `${element.top}%`,
               }}
               animate={{
                 y: [0, -20, 0],
@@ -174,9 +186,9 @@ function ConnectionStatusSection({ connected }) {
                 scale: [1, 1.2, 1],
               }}
               transition={{
-                duration: 3 + Math.random() * 2,
+                duration: element.duration,
                 repeat: Infinity,
-                delay: Math.random() * 2,
+                delay: element.delay,
                 ease: "easeInOut",
               }}
             />

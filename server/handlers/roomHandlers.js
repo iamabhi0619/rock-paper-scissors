@@ -6,11 +6,9 @@ const {
 } = require("./roomHandlerFunctions");
 
 function setupRoomHandlers(socket, io) {
-  console.log(`Setting up room handlers for user: ${socket.user.name}`);
 
   // Test event to verify socket communication
   socket.on("test_event", (data) => {
-    console.log(`📨 Test event received from ${socket.user.name}:`, data);
   });
 
   // Room event handlers

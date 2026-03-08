@@ -9,27 +9,24 @@ import { cn } from '@/lib/utils';
 const CHOICE_CONFIG = {
   rock: {
     label: 'Rock',
-    emoji: '🪨',
     color: 'text-slate-600'
   },
   paper: {
     label: 'Paper',
-    emoji: '📄',
     color: 'text-blue-600'
   },
   scissors: {
     label: 'Scissors',
-    emoji: '✂️',
     color: 'text-red-600'
   }
 };
 
-function GameControlsSection({ 
-  gameState, 
-  userChoice, 
-  canMakeChoice, 
-  isMyTurn, 
-  onMakeChoice 
+function GameControlsSection({
+  gameState,
+  userChoice,
+  canMakeChoice,
+  isMyTurn,
+  onMakeChoice
 }) {
   if (gameState?.state !== 'playing') return null;
 
@@ -57,14 +54,14 @@ function GameControlsSection({
       initial="hidden"
       animate="visible"
     >
-      <Card className="w-full p-3 gap-1">
+      <Card className="w-full shadow-none">
         <CardHeader className="">
           <CardTitle className="text-center text-lg">
             {!canMakeChoice && userChoice ? 'Waiting for opponent...' : 'Make your choice!'}
           </CardTitle>
         </CardHeader>
-        <CardContent className="px-6 pb-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <CardContent className="px-6">
+          <div className="grid grid-cols-3 sm:grid-cols-3 gap-4">
             {Object.entries(CHOICE_CONFIG).map(([choice, config]) => (
               <motion.div
                 key={choice}
@@ -82,22 +79,22 @@ function GameControlsSection({
                   onClick={() => onMakeChoice(choice)}
                   disabled={!canMakeChoice}
                 >
-                  <Icons 
-                    icon={choice} 
-                    type="outline" 
+                  <Icons
+                    icon={choice}
+                    type="outline"
                     className={cn(
                       "size-8 transition-colors duration-200",
                       userChoice === choice ? "fill-primary-foreground" : "fill-primary"
-                    )} 
+                    )}
                   />
                   <span className="text-sm font-semibold">{config.label}</span>
                 </Button>
               </motion.div>
             ))}
           </div>
-          
+
           {/* Status Messages */}
-          <motion.div 
+          <motion.div
             className="mt-4 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -105,12 +102,6 @@ function GameControlsSection({
           >
             {!canMakeChoice && userChoice && (
               <div className="flex items-center justify-center gap-2 text-green-600 font-medium">
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                >
-                  ✅
-                </motion.div>
                 <span>Choice made! Waiting for opponent...</span>
                 <div className="flex space-x-1 ml-2">
                   {[0, 1, 2].map((index) => (
@@ -130,7 +121,7 @@ function GameControlsSection({
                 </div>
               </div>
             )}
-            
+
             {!canMakeChoice && !userChoice && !isMyTurn && (
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <motion.div

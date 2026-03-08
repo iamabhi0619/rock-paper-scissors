@@ -8,17 +8,14 @@ import Icons from '@/components/utility/Icons';
 const CHOICE_CONFIG = {
     rock: {
         label: 'Rock',
-        emoji: '🪨',
         color: 'text-slate-600'
     },
     paper: {
         label: 'Paper',
-        emoji: '📄',
         color: 'text-blue-600'
     },
     scissors: {
         label: 'Scissors',
-        emoji: '✂️',
         color: 'text-red-600'
     }
 };
@@ -31,13 +28,13 @@ function BotGameControls({ onPlayerChoice, disabled, isPlaying }) {
     };
 
     return (
-        <Card className={'w-full h-full gap-2 p-2'}>
+        <Card className={'w-full h-full gap-0'}>
             <CardHeader>
                 <CardTitle className="text-center">
                     {isPlaying ? 'Bot turn' : 'Make your choice!'}
                 </CardTitle>
             </CardHeader>
-            <CardContent className={'flex justify-between items-center px-16'}>
+            <CardContent className={'flex justify-between items-center sm:px-16'}>
                 <motion.div
                     className="text-center mb-2 rotate-90 origin-[left center]"
                     // animate={{
@@ -58,7 +55,7 @@ function BotGameControls({ onPlayerChoice, disabled, isPlaying }) {
                 </motion.div>
             </CardContent>
             <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 sm:grid-cols-3 gap-4">
                     {Object.entries(CHOICE_CONFIG).map(([choice]) => {
                         return (
                             <motion.div

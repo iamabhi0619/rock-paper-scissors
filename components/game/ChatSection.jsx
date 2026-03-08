@@ -8,9 +8,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { useUserStore } from '@/store/user';
 
-function ChatSection({ messages, onSendMessage }) {
+function ChatSection({ messages, onSendMessage, isMobile = false }) {
   const [chatMessage, setChatMessage] = useState('');
   const scrollAreaRef = useRef(null);
+  const inputRef = useRef(null);
   const { user } = useUserStore();
 
   const handleSendMessage = () => {
@@ -27,6 +28,19 @@ function ChatSection({ messages, onSendMessage }) {
     }
   };
 
+  // Handle input focus on mobile - scroll into view
+  const handleInputFocus = () => {
+    if (isMobile && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'nearest',
+          inline: 'nearest'
+        });
+      }, 300); // Wait for keyboard animation
+    }
+  };
+
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     const scrollContainer = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
@@ -36,14 +50,13 @@ function ChatSection({ messages, onSendMessage }) {
   });
 
   const isCurrentUser = (msgUser) => {
-    console.log(msgUser)
     return user && msgUser === user.name;
   };
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="flex-shrink-0 pb-3">
-        <div className="flex items-center justify-between">
+    <Card className="h-full flex flex-col border-0 md:border shadow-none md:shadow-sm">
+      <CardHeader className="shrink-0 pb-3">
+        <div className="sm:flex items-center justify-between hidden">
           <CardTitle className="text-lg">Chat</CardTitle>
           <Badge variant="outline" className="text-xs">
             {messages.length} {messages.length === 1 ? 'message' : 'messages'}
@@ -53,8 +66,8 @@ function ChatSection({ messages, onSendMessage }) {
 
       <CardContent className="flex-1 flex flex-col min-h-0 p-0">
         {/* Messages Area */}
-        <div className="flex-1 px-4">
-          <ScrollArea ref={scrollAreaRef} className="h-full w-full max-h-[400px]">
+        <div className="flex-1 px-4 min-h-0">
+          <ScrollArea ref={scrollAreaRef} className="h-full w-full">
             <div className="space-y-2 py-4 px-2">
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-40">
@@ -102,7 +115,7 @@ function ChatSection({ messages, onSendMessage }) {
                           <p className="leading-relaxed">{msg.message}</p>
                           {isLastInGroup && (
                             <div className={`text-xs opacity-70 mt-1 ${isOwn ? 'text-left' : 'text-right'}`}>
-                              {msg.timestamp 
+                              {msg.timestamp
                                 ? new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                                 : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                               }
@@ -119,15 +132,17 @@ function ChatSection({ messages, onSendMessage }) {
         </div>
 
         {/* Input Area */}
-        <div className="flex-shrink-0  px-3 pt-4 border-t">
+        <div className="shrink-0 px-3 pt-4 pb-4 border-t" style={{ paddingBottom: isMobile ? 'max(1rem, env(safe-area-inset-bottom))' : '1rem' }} ref={inputRef}>
           <div className="flex gap-2">
             <Input
               placeholder="Type your message..."
               value={chatMessage}
               onChange={(e) => setChatMessage(e.target.value)}
               onKeyDown={handleKeyDown}
+              onFocus={handleInputFocus}
               className="flex-1"
               disabled={!user}
+              autoComplete="off"
             />
             <Button
               onClick={handleSendMessage}

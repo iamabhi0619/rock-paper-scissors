@@ -96,16 +96,16 @@ function BotGame() {
     const displayRound = gameState.gameFinished ? MAX_ROUNDS : gameState.currentRound - 1;
 
     return (
-        <Card className="gap-2 w-full">
+        <Card className="gap-2 w-full px-0 p-2">
             {/* Game Header */}
-            <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+            <CardHeader className="p-0">
+                <CardTitle className="flex flex-col items-center justify-center w-full px-3">
+                    <div className="flex items-center gap-2 w-full">
                         <IconRobotFace className="h-6 w-6 text-primary" />
                         Want to kill some time? Play against the bot!
                     </div>
-                    <div className='flex gap-4 items-center'>
-                        <div className="flex items-center gap-2 min-w-[120px]">
+                    <div className='flex gap-4 items-center w-full'>
+                        <div className="flex items-center gap-2 min-w-30 w-full">
                             <Progress value={progressValue} className="w-full h-2" />
                             <span className="text-xs text-muted-foreground whitespace-nowrap">
                                 {Math.round(progressValue)}%
@@ -119,8 +119,8 @@ function BotGame() {
                 </CardTitle>
 
             </CardHeader>
-            <CardContent className="grid gap-4 w-full grid-cols-1 md:grid-cols-7 ">
-                <div className='w-full flex flex-col gap-4 col-span-5'>
+            <CardContent className="flex flex-col-reverse md:grid gap-4 w-full md:grid-cols-7 p-0">
+                <div className='w-full flex flex-col gap-4 md:col-span-5'>
                     {/* Game Controls */}
                     {!gameState.gameFinished && (
                         <BotGameControls
@@ -136,13 +136,13 @@ function BotGame() {
                             <CardContent className="text-center py-8">
                                 <div className="space-y-4">
                                     <div className="flex justify-center">
-                                        <IconTrophy className="h-12 w-12 text-yellow-500" />
+                                        <IconTrophy className="h-12 w-12 text-chart-1" />
                                     </div>
                                     <div>
                                         <h3 className="text-2xl font-bold">
-                                            {gameState.gameResult === 'player' && 'Congratulations! 🎉'}
-                                            {gameState.gameResult === 'bot' && 'Bot Wins! 🤖'}
-                                            {gameState.gameResult === 'tie' && "It's a Tie! 🤝"}
+                                            {gameState.gameResult === 'player' && 'Congratulations! You Win!'}
+                                            {gameState.gameResult === 'bot' && 'Bot Wins!'}
+                                            {gameState.gameResult === 'tie' && "It's a Tie!"}
                                         </h3>
                                         <p className="text-muted-foreground mt-2">
                                             Final Score: You {gameState.playerScore} - {gameState.botScore} Bot
@@ -157,7 +157,7 @@ function BotGame() {
                         </Card>
                     )}
                 </div>
-                <div className='w-full flex flex-col gap-2 col-span-2'>
+                <div className='w-full flex flex-col gap-2 md:col-span-2'>
                     <BotGameScore
                         playerScore={gameState.playerScore}
                         botScore={gameState.botScore}

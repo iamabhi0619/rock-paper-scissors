@@ -1,6 +1,7 @@
 
 
 import { cn } from '@/lib/utils';
+import { IconRock, IconPaper, IconScissors, IconQuestionMark } from '@tabler/icons-react';
 
 function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
 
@@ -9,18 +10,15 @@ function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
         className
     );
 
-    // For emoji type, return text span instead of SVG
-    if (type === 'emoji') {
-        const emojiMap = {
-            rock: '🪨',
-            paper: '📄',
-            scissors: '✂️'
+    // For simple type, use Tabler icons
+    if (type === 'simple') {
+        const iconMap = {
+            rock: IconRock,
+            paper: IconPaper,
+            scissors: IconScissors
         };
-        return (
-            <span className={cn('inline-flex items-center justify-center text-center', className)} {...props}>
-                {emojiMap[icon] || '❓'}
-            </span>
-        );
+        const IconComponent = iconMap[icon] || IconQuestionMark;
+        return <IconComponent className={className} {...props} />;
     }
     if (icon === 'rock') {
         if (type === 'solid') {
@@ -36,7 +34,7 @@ function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
                 <path d="M224 464c-17.7 0-32 14.3-32 32v48c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32v-48c0-17.7-14.3-32-32-32H224zm-22.8-48h64.6l-79.5-88.3c-6.6-7.4-10.3-16.9-10.3-26.8V268c0-16.1 11.9-29.5 27.4-31.7 11.8-1.7 20.6-11.8 20.6-23.8V136c0-13.3 10.7-24 24-24 7.2 0 13.6 3.1 18 8.1 4.6 5.2 11.1 8.1 18 8.1s13.4-3 18-8.1c4.4-5 10.8-8.1 18-8.1 8.5 0 15.9 4.4 20.2 11.1 6.9 10.7 20.9 14.2 32 8 3.5-1.9 7.4-3.1 11.8-3.1 10.6 0 19.7 6.9 22.8 16.6 3.8 11.7 15.9 18.7 28 16 1.7-.4 3.4-.6 5.2-.6 13.3 0 24 10.7 24 24v92.2c0 14.4-3.5 28.5-10.2 41.2L401.6 416h54.3l40.3-76.2c10.4-19.6 15.8-41.5 15.8-63.6V184c0-38.4-30.1-69.8-68.1-71.9C431 92.8 409 80 384 80c-5.7 0-11.2.7-16.5 1.9C354.8 70.8 338.2 64 320 64c-13.1 0-25.4 3.5-36 9.6-10.6-6.1-22.9-9.6-36-9.6-39.8 0-72 32.2-72 72v58.7c-28.3 12.3-48 40.5-48 73.3v32.9c0 21.7 8 42.7 22.6 58.9l50.6 56.2z" />
             </svg>)
         } else {
-            return '🪨';
+            return <IconRock className={className} {...props} />;
         }
     } else if (icon === 'paper') {
         if (type === 'solid') {
@@ -52,7 +50,7 @@ function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
                 </svg>
             )
         } else {
-            return '📄';
+            return <IconPaper className={className} {...props} />;
         }
     } else if (icon === 'scissors') {
         if (type === 'solid') {
@@ -71,7 +69,7 @@ function Icons({ icon, type = 'outline', className = "w-6 h-6", ...props }) {
                 </svg >
             )
         } else {
-            return '✂️';
+            return <IconScissors className={className} {...props} />;
         }
     } else {
         return (

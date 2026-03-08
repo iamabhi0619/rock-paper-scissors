@@ -4,13 +4,10 @@ import { useCallback } from "react";
 
 export function useSocketActions(socket) {
   const joinRoom = useCallback((roomId) => {
-    console.log(`🎯 Client: Attempting to join room ${roomId}`);
-    console.log(`🔌 Socket connected:`, !!socket);
     if (socket) {
-      console.log(`📤 Emitting join_room event for room: ${roomId}`);
+      
       socket.emit("join_room", roomId);
     } else {
-      console.log(`❌ Socket not available for joining room ${roomId}`);
     }
   }, [socket]);
 
@@ -45,12 +42,9 @@ export function useSocketActions(socket) {
   }, [socket]);
 
   const testConnection = useCallback(() => {
-    console.log(`🧪 Testing socket connection...`);
     if (socket) {
-      console.log(`📤 Sending test event`);
       socket.emit("test_event", { message: "Hello from client", timestamp: Date.now() });
     } else {
-      console.log(`❌ No socket available for test`);
     }
   }, [socket]);
 

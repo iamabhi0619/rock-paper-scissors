@@ -7,9 +7,9 @@ import { motion } from 'framer-motion';
 import Icons from '@/components/utility/Icons';
 
 const CHOICE_CONFIG = {
-    rock: { emoji: '🪨', label: 'Rock' },
-    paper: { emoji: '📄', label: 'Paper' },
-    scissors: { emoji: '✂️', label: 'Scissors' }
+    rock: { label: 'Rock' },
+    paper: { label: 'Paper' },
+    scissors: { label: 'Scissors' }
 };
 
 function BotGameResult({ playerChoice, botChoice, roundResult, gameFinished }) {

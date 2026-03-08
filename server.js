@@ -1,9 +1,14 @@
+// Load environment variables in development
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const { createServer } = require("http");
 const next = require("next");
 const { setupSocketIO } = require("./server/socketConfig");
 
 const dev = process.env.NODE_ENV !== "production";
-const hostname = "localhost";
+const hostname = "10.121.162.173"; //TODO: Change this to your local IP address or "localhost" for development
 const port = process.env.PORT || 3000;
 
 const app = next({ dev, hostname, port });
@@ -26,8 +31,8 @@ app.prepare().then(() => {
   server.listen(port, (err) => {
     if (err) throw err;
     console.log(
-      `🚀 Server ready on http://${hostname}:${port} in ${process.env.NODE_ENV} mode`,
+      `Server ready on http://${hostname}:${port} in ${process.env.NODE_ENV} mode`,
     );
-    console.log(`⚡ Socket.IO server is running`);
+    console.log(`Socket.IO server is running`);
   });
 });
