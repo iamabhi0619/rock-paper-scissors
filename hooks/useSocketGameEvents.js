@@ -10,27 +10,18 @@ export function useSocketGameEvents(socket, user, setGameState) {
     // Game events
     socket.on("game_start", (data) => {
       setGameState(data.room);
-      console.log("Game started:", data);
+      // console.log("Game started:", data);
     });
 
     socket.on("choice_made", (data) => {
-      console.log("Choice made:", data.choice);
+      // console.log("Choice made:", data.choice);
     });
-
-    socket.on("opponent_chose", (data) => {
-      toast.info("⏱️ Opponent made their choice! You have 10 seconds!", {
-        duration: 3000,
-      });
-      console.log("Opponent chose:", data.message);
-    });
-
     socket.on("round_result", (data) => {
       setGameState(data.room);
       if (data.timeout) {
         toast.warning(data.message, { duration: 5000 });
       }
-      console.log("Round result:", data.message);
-      
+      // console.log("Round result:", data.message);
       // Clear the result after showing it briefly
       if (data.timeout) {
         setTimeout(() => {
@@ -42,18 +33,28 @@ export function useSocketGameEvents(socket, user, setGameState) {
     socket.on("game_state_updated", (data) => {
       setGameState(data.room);
       if (data.message) {
-        console.log("Game state updated:", data.message);
+        // console.log("Game state updated:", data.message);
       }
     });
 
     socket.on("game_finished", (data) => {
       setGameState(data.room);
-      console.log("Game finished:", data.finalMessage);
+      // console.log("Game finished:", data.finalMessage);
     });
 
     socket.on("game_restarted", (data) => {
       setGameState(data.room);
-      console.log("Game restarted:", data.message);
+      // console.log("Game restarted:", data.message);
+    });
+
+    socket.on("game_reset_timeout", (data) => {
+      console.log("Game rest..!!");
+      setGameState(data.room);
+      toast.warning(data.message, {
+        duration: 5000,
+        description: "All scores have been reset. Starting fresh!"
+      });
+      // console.log("Game reset due to timeout:", data);
     });
 
     socket.on("game_error", (data) => {
@@ -68,6 +69,7 @@ export function useSocketGameEvents(socket, user, setGameState) {
       socket.off("game_state_updated");
       socket.off("game_finished");
       socket.off("game_restarted");
+      socket.off("game_reset_timeout");
       socket.off("game_error");
     };
   }, [socket, user, setGameState]);

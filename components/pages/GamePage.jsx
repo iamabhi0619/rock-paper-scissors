@@ -85,59 +85,29 @@ function GamePage() {
   }
 
   return (
-    <div className="min-h-dvh flex flex-col w-full">
+    <div className="min-h-dvh flex flex-col w-full bg-background">
       <div className="max-w-7xl mx-auto w-full h-full flex flex-col pb-3">
         {/* Header */}
-        <div className="text-center py-4 shrink-0 relative">
-          {/* User Name Display - Top Right on desktop, below title on mobile */}
-          <div className="hidden sm:flex absolute top-4 right-4 items-center gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={() => setIsNameDialogOpen(true)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted hover:bg-muted/80 transition-colors group"
-                >
-                  <IconUser className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
-                  <span className="text-sm font-medium">{user.name}</span>
-                  <IconEdit className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                Click to change your name
-              </TooltipContent>
-            </Tooltip>
-          </div>
-
+        <div className="text-center py-4 shrink-0">
           <h1 className="text-4xl sm:text-5xl font-bold text-primary mb-2">
             Rock Paper Scissors
           </h1>
-          
-          {/* Mobile user name display */}
-          <div className="sm:hidden flex justify-center mb-2">
-            <button
-              onClick={() => setIsNameDialogOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted hover:bg-muted/80 transition-colors group"
-            >
-              <IconUser className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
-              <span className="text-sm font-medium">{user.name}</span>
-              <IconEdit className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary" />
-            </button>
-          </div>
-          
+
           <div className="flex items-center flex-col sm:flex-row w-full justify-center gap-0 sm:gap-2">
             <p className="text-muted-foreground">Multiplayer Online Game - Want to make any decision?</p>
             <Tooltip >
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Badge
                   variant={connected ? "default" : "destructive"}
-                  className="cursor-help"
+                  className={connected ? "cursor-pointer bg-green-600 hover:bg-green-700 text-white" : "cursor-help"}
+                  onClick={() => connected && setIsNameDialogOpen(true)}
                 >
-                  {connected ? "Connected" : "Disconnected"}
+                  {connected ? user.name : "Disconnected"}
                 </Badge>
               </TooltipTrigger>
               <TooltipContent side="bottom">
                 {connected
-                  ? "You are connected to the game server."
+                  ? "Click to change your name"
                   : "You are disconnected. Please check your internet connection."}
               </TooltipContent>
 
@@ -236,9 +206,9 @@ function GamePage() {
           )}
         </div>
       </div>
-      <NameInputDialog 
-        isOpen={isNameDialogOpen} 
-        onClose={() => setIsNameDialogOpen(false)} 
+      <NameInputDialog
+        isOpen={isNameDialogOpen}
+        onClose={() => setIsNameDialogOpen(false)}
       />
     </div>
   );

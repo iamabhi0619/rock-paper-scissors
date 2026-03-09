@@ -25,12 +25,12 @@ export function useSocketConnection(user) {
     // Connection events
     newSocket.on("connect", () => {
       setConnected(true);
-      console.log("Connected to game server");
+      // console.log("Connected to game server");
     });
 
     newSocket.on("disconnect", () => {
       setConnected(false);
-      console.log("Disconnected from game server");
+      // console.log("Disconnected from game server");
     });
 
     newSocket.on("connect_error", (error) => {

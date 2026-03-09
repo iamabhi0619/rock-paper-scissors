@@ -70,10 +70,9 @@ function GameControlsSection({
           {/* Show timer when active */}
           {timerActive && timeLeft !== null && (
             <div className="flex justify-center mb-6">
-              <CircularTimer 
-                timeLeft={timeLeft} 
+              <CircularTimer
+                timeLeft={timeLeft}
                 totalTime={10}
-                onTimeout={() => console.log('Timer expired!')}
               />
             </div>
           )}

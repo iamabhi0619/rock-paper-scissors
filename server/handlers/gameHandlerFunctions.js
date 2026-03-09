@@ -130,82 +130,42 @@ function handleRestartGame(socket, io) {
   });
 }
 
-// Handle choice timeout - opponent wins the round
+// Handle choice timeout - reset game for both players
 function handleChoiceTimeout(socket, io) {
-  if (!socket.currentRoom) return;
-
+  if (!socket.currentRoom) {
+    return;
+  }
   const room = RoomManager.getRoom(socket.currentRoom);
-  if (!room || room.state !== 'playing') return;
+  if (!room || room.state !== 'playing') {
+    return;
+  }
 
   // Determine which player timed out
   const isPlayer1 = room.players.player1._id === socket.user._id;
   const isPlayer2 = room.players.player2?._id === socket.user._id;
 
-  if (!isPlayer1 && !isPlayer2) return;
+  if (!isPlayer1 && !isPlayer2) {
+    return;
+  }
 
   // Check if timeout is valid (player hasn't made choice and opponent has)
   const playerData = isPlayer1 ? room.players.player1 : room.players.player2;
   const opponentData = isPlayer1 ? room.players.player2 : room.players.player1;
+  
 
   if (playerData.ready || !opponentData.ready) {
-    // Either player already chose or opponent hasn't chosen yet
     return;
   }
 
-  // Give opponent the win for this round
-  if (isPlayer1) {
-    room.players.player2.score += 1;
-  } else {
-    room.players.player1.score += 1;
-  }
+  // Reset the entire game state
+  resetGameState(room);
 
-  // Mark the timed-out player as ready with a default choice
-  playerData.choice = 'timeout';
-  playerData.ready = true;
-
-  // Reset choices for next round
-  room.players.player1.choice = null;
-  room.players.player1.ready = false;
-  if (room.players.player2) {
-    room.players.player2.choice = null;
-    room.players.player2.ready = false;
-  }
-
-  // Increment round
-  room.round++;
-
-  // Check if game is finished
-  const gameFinished = checkGameFinished(room);
-  
-  if (gameFinished.isFinished) {
-    room.state = 'finished';
-    io.to(socket.currentRoom).emit('game_finished', {
-      roundWinner: opponentData.name,
-      message: `${playerData.name} ran out of time! ${opponentData.name} wins the round!`,
-      gameWinner: gameFinished.gameWinner,
-      finalMessage: gameFinished.finalMessage,
-      room
-    });
-  } else {
-    // Clear last result immediately
-    room.lastResult = null;
-    
-    // Emit timeout result
-    io.to(socket.currentRoom).emit('round_result', {
-      roundWinner: opponentData.name,
-      message: `${playerData.name} ran out of time! ${opponentData.name} wins the round!`,
-      timeout: true,
-      room
-    });
-
-    // Start next round after delay
-    setTimeout(() => {
-      io.to(socket.currentRoom).emit('game_state_updated', {
-        room,
-        message: `Round ${room.round + 1} - Make your choices!`
-      });
-    }, 3000);
-  }
+  // Notify both players that the game was reset due to timeout
+  io.to(socket.currentRoom).emit('game_reset_timeout', {
+    room,
+    timedOutPlayer: playerData.name,
+    message: `${playerData.name} ran out of time! Game has been reset.`
+  });
 }
 
 module.exports = {

@@ -19,7 +19,10 @@ export function useSocketActions(socket) {
 
   const makeChoice = useCallback((choice) => {
     if (socket) {
+      // console.log('Emitting make_choice:', choice);
       socket.emit("make_choice", choice);
+    } else {
+      console.error('Cannot make choice - socket not connected');
     }
   }, [socket]);
 

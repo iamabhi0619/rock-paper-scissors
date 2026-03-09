@@ -16,6 +16,15 @@ const CHOICE_CONFIG = {
 
 function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
   const user = useUserStore((state) => state.user);
+  
+  // Determine which player position the current user is in
+  const isPlayer1 = gameState?.players?.player1?._id === user?._id;
+  const isPlayer2 = gameState?.players?.player2?._id === user?._id;
+  
+  // Get player labels
+  const player1Label = isPlayer1 ? 'You' : 'Opponent';
+  const player2Label = isPlayer2 ? 'You' : 'Opponent';
+  
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -84,7 +93,7 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                   <div className="p-1 rounded-full text-primary hidden sm:block">
                     <IconUser className="h-6 w-6" />
                   </div>
-                  <Badge variant="outline" className="text-xs">{'Player 1'}</Badge>
+                  <Badge variant="outline" className="text-xs">{player1Label}</Badge>
                 </div>
 
                 <div>
@@ -147,7 +156,7 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                   <div className="p-1 rounded-full hidden sm:block">
                     <IconUser className="h-6 w-6 text-red-600 dark:text-red-400" />
                   </div>
-                  <Badge variant="outline" className="text-xs">Player 2</Badge>
+                  <Badge variant="outline" className="text-xs">{player2Label}</Badge>
                 </div>
 
                 <div>
