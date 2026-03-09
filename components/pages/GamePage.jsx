@@ -6,7 +6,7 @@ import { useUserStore } from "@/store/user";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { IconMessageCircle } from "@tabler/icons-react";
+import { IconMessageCircle, IconEdit, IconUser } from "@tabler/icons-react";
 import {
   Sheet,
   SheetContent,
@@ -23,11 +23,14 @@ import GameFinishedSection from "@/components/game/GameFinishedSection";
 import ChatSection from "@/components/game/ChatSection";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { BotGame } from "../bot";
+import NameInputDialog from "../NameInputDialog";
 
 function GamePage() {
   const { user } = useUserStore();
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isNameDialogOpen, setIsNameDialogOpen] = useState(false);
   const {
+    socket,
     connected,
     currentRoom,
     gameState,
@@ -42,8 +45,8 @@ function GamePage() {
   } = useSocket();
 
   // Game logic hook
-  const { userChoice, isMyTurn, canMakeChoice, handleMakeChoice } =
-    useGameLogic(gameState, user);
+  const { userChoice, isMyTurn, canMakeChoice, handleMakeChoice, timeLeft, timerActive } =
+    useGameLogic(gameState, user, socket);
 
   // Close mobile chat when leaving room
   useEffect(() => {
@@ -85,10 +88,42 @@ function GamePage() {
     <div className="min-h-dvh flex flex-col w-full">
       <div className="max-w-7xl mx-auto w-full h-full flex flex-col pb-3">
         {/* Header */}
-        <div className="text-center py-4 shrink-0">
+        <div className="text-center py-4 shrink-0 relative">
+          {/* User Name Display - Top Right on desktop, below title on mobile */}
+          <div className="hidden sm:flex absolute top-4 right-4 items-center gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => setIsNameDialogOpen(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted hover:bg-muted/80 transition-colors group"
+                >
+                  <IconUser className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+                  <span className="text-sm font-medium">{user.name}</span>
+                  <IconEdit className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Click to change your name
+              </TooltipContent>
+            </Tooltip>
+          </div>
+
           <h1 className="text-4xl sm:text-5xl font-bold text-primary mb-2">
             Rock Paper Scissors
           </h1>
+          
+          {/* Mobile user name display */}
+          <div className="sm:hidden flex justify-center mb-2">
+            <button
+              onClick={() => setIsNameDialogOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted hover:bg-muted/80 transition-colors group"
+            >
+              <IconUser className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+              <span className="text-sm font-medium">{user.name}</span>
+              <IconEdit className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary" />
+            </button>
+          </div>
+          
           <div className="flex items-center flex-col sm:flex-row w-full justify-center gap-0 sm:gap-2">
             <p className="text-muted-foreground">Multiplayer Online Game - Want to make any decision?</p>
             <Tooltip >
@@ -147,6 +182,8 @@ function GamePage() {
                     canMakeChoice={canMakeChoice}
                     isMyTurn={isMyTurn}
                     onMakeChoice={onMakeChoice}
+                    timeLeft={timeLeft}
+                    timerActive={timerActive}
                   />
                 </div>
 
@@ -199,6 +236,10 @@ function GamePage() {
           )}
         </div>
       </div>
+      <NameInputDialog 
+        isOpen={isNameDialogOpen} 
+        onClose={() => setIsNameDialogOpen(false)} 
+      />
     </div>
   );
 }

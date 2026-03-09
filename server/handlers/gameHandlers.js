@@ -1,6 +1,7 @@
 const {
   handleMakeChoice,
   handleRestartGame,
+  handleChoiceTimeout,
 } = require('./gameHandlerFunctions');
 
 function setupGameHandlers(socket, io) {
@@ -13,8 +14,11 @@ function setupGameHandlers(socket, io) {
   socket.on('restart_game', () => {
     handleRestartGame(socket, io);
   });
-}
 
-module.exports = { setupGameHandlers };
+  // Handle choice timeout
+  socket.on('choice_timeout', () => {
+    handleChoiceTimeout(socket, io);
+  });
+}
 
 module.exports = { setupGameHandlers };

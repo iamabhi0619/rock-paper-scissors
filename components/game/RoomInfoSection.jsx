@@ -66,7 +66,7 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                 <p className="text-sm text-muted-foreground">Multiplayer Battle</p>
               </div>
             </div>
-            <Button variant="outline" oanClick={onLeaveRoom} className="shrink-0">
+            <Button variant="outline" onClick={onLeaveRoom} className="shrink-0">
               Leave Room
             </Button>
           </div>

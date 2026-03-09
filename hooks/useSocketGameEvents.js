@@ -18,12 +18,25 @@ export function useSocketGameEvents(socket, user, setGameState) {
     });
 
     socket.on("opponent_chose", (data) => {
+      toast.info("⏱️ Opponent made their choice! You have 10 seconds!", {
+        duration: 3000,
+      });
       console.log("Opponent chose:", data.message);
     });
 
     socket.on("round_result", (data) => {
       setGameState(data.room);
+      if (data.timeout) {
+        toast.warning(data.message, { duration: 5000 });
+      }
       console.log("Round result:", data.message);
+      
+      // Clear the result after showing it briefly
+      if (data.timeout) {
+        setTimeout(() => {
+          console.log("Clearing timeout result");
+        }, 3000);
+      }
     });
 
     socket.on("game_state_updated", (data) => {

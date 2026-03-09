@@ -11,31 +11,12 @@ const sourceSans3 = Source_Sans_3({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata = {
-  title: "Rock Paper Scissors",
-  description: "Play Rock Paper Scissors with friends online!",
-  manifest: "/manifest.json",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-    interactiveWidget: "resizes-content"
-  },
-  themeColor: "#ffffff",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "R P S"
-  }
-};
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/web-app-manifest-192x192.png" />
-        <link rel="apple-touch-icon" href="/web-app-manifest-192x192.png" />
+        <link rel="icon" href="/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
       </head>
       <body
         className={`${sourceSans3.variable} antialiased ${sourceSans3.className}`}

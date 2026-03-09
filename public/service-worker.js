@@ -2,8 +2,8 @@ const CACHE_NAME = 'rps-cache-v1';
 const urlsToCache = [
   '/',
   '/globals.css',
-  '/web-app-manifest-192x192.png',
-  '/web-app-manifest-512x512.png',
+  '/icon-192x192.png', //TODO: Remove this and use the manifest icons instead fivi icon
+  '/icon-512x512.png',
   '/offline.html'
 ];
 
@@ -38,7 +38,7 @@ self.addEventListener('fetch', (event) => {
         if (response) {
           return response;
         }
-        
+
         return fetch(event.request).then(
           (response) => {
             // Check if valid response

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import Icons from '@/components/utility/Icons';
 import { cn } from '@/lib/utils';
+import CircularTimer from './CircularTimer';
 
 const CHOICE_CONFIG = {
   rock: {
@@ -26,7 +27,9 @@ function GameControlsSection({
   userChoice,
   canMakeChoice,
   isMyTurn,
-  onMakeChoice
+  onMakeChoice,
+  timeLeft,
+  timerActive
 }) {
   if (gameState?.state !== 'playing') return null;
 
@@ -54,13 +57,26 @@ function GameControlsSection({
       initial="hidden"
       animate="visible"
     >
-      <Card className="w-full shadow-none">
+      <Card className={cn(
+        "w-full shadow-none transition-all duration-300",
+        timerActive && timeLeft !== null && timeLeft <= 5 && "ring-2 ring-destructive animate-pulse"
+      )}>
         <CardHeader className="">
           <CardTitle className="text-center text-lg">
             {!canMakeChoice && userChoice ? 'Waiting for opponent...' : 'Make your choice!'}
           </CardTitle>
         </CardHeader>
         <CardContent className="px-6">
+          {/* Show timer when active */}
+          {timerActive && timeLeft !== null && (
+            <div className="flex justify-center mb-6">
+              <CircularTimer 
+                timeLeft={timeLeft} 
+                totalTime={10}
+                onTimeout={() => console.log('Timer expired!')}
+              />
+            </div>
+          )}
           <div className="grid grid-cols-3 sm:grid-cols-3 gap-4">
             {Object.entries(CHOICE_CONFIG).map(([choice, config]) => (
               <motion.div
