@@ -33,7 +33,7 @@ const RoomManager = {
 
   getAvailableRooms() {
     return Array.from(rooms.values())
-      .filter(room => room.state === 'waiting')
+      .filter(room => room.state === 'waiting' && !room.isPrivate)
       .map(room => ({
         id: room.id,
         creator: room.players.player1.name,

@@ -2,13 +2,13 @@ const RoomManager = require("../utils/roomManager");
 const { createRoom } = require("../utils/gameLogic");
 
 // Handle joining a room
-function handleJoinRoom(socket, io, roomId) {
+function handleJoinRoom(socket, io, roomId, isPrivate) {
   
   try {
     const room = RoomManager.getRoom(roomId);
 
     if (!room) {
-      return handleCreateNewRoom(socket, roomId);
+      return handleCreateNewRoom(socket, roomId, isPrivate);
     } else if (canJoinAsPlayer2(room, socket.user._id)) {
       return handleJoinAsPlayer2(socket, io, roomId, room);
     } else if (canRejoinRoom(room, socket.user._id)) {
@@ -27,8 +27,8 @@ function handleJoinRoom(socket, io, roomId) {
 }
 
 // Create a new room
-function handleCreateNewRoom(socket, roomId) {
-  const room = createRoom(roomId, socket.user);
+function handleCreateNewRoom(socket, roomId, isPrivate = false) {
+  const room = createRoom(roomId, socket.user, isPrivate);
   RoomManager.addRoom(roomId, room);
   socket.join(roomId);
   socket.currentRoom = roomId;

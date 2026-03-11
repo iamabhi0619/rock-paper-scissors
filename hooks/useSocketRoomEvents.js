@@ -26,7 +26,7 @@ export function useSocketRoomEvents(socket) {
 
     socket.on("room_error", (data) => {
       // console.error("Room error:", data.message);
-      toast.room(data.message || "Cannot join the room");
+      toast.error(data.message || "Cannot join the room");
       // Keep toast for errors as they need immediate attention
     });
 

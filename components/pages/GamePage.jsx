@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useSocket } from "@/context/Socket";
 import { useUserStore } from "@/store/user";
 import { useGameLogic } from "@/hooks/useGameLogic";
@@ -27,6 +28,7 @@ import NameInputDialog from "../NameInputDialog";
 
 function GamePage() {
   const { user } = useUserStore();
+  const searchParams = useSearchParams();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNameDialogOpen, setIsNameDialogOpen] = useState(false);
   const {
@@ -58,6 +60,11 @@ function GamePage() {
   useEffect(() => {
     if (connected) {
       getAvailableRooms();
+      // Auto-join room from URL param ?room=ROOMID
+      const roomParam = searchParams.get('room');
+      if (roomParam && !currentRoom) {
+        joinRoom(roomParam.toUpperCase());
+      }
     }
   }, [connected, getAvailableRooms]);
 
@@ -70,9 +77,9 @@ function GamePage() {
     return result;
   };
 
-  const handleCreateRoom = () => {
+  const handleCreateRoom = (isPrivate = false) => {
     const roomId = generateRoomId();
-    joinRoom(roomId);
+    joinRoom(roomId, isPrivate);
   };
 
   const onMakeChoice = (choice) => {

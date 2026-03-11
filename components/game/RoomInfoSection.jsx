@@ -1,12 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { IconUser, IconTrophy, IconUsers, IconSwords } from '@tabler/icons-react';
+import { IconUser, IconTrophy, IconUsers, IconSwords, IconLock, IconWorld, IconCopy, IconCheck } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import Icons from '@/components/utility/Icons';
 import { useUserStore } from '@/store/user';
+import { toast } from 'sonner';
 
 const CHOICE_CONFIG = {
   rock: { label: 'Rock' },
@@ -16,6 +18,20 @@ const CHOICE_CONFIG = {
 
 function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
   const user = useUserStore((state) => state.user);
+  const [copied, setCopied] = useState(false);
+  const isPrivate = gameState?.isPrivate ?? false;
+  
+  const handleShare = () => {
+    const base = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
+    const url = `${base}?room=${currentRoom}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      toast.success('Room link copied to clipboard!');
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      toast.error('Failed to copy link');
+    });
+  };
   
   // Determine which player position the current user is in
   const isPlayer1 = gameState?.players?.player1?._id === user?._id;
@@ -71,13 +87,32 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
                 <IconUsers className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <CardTitle className="text-lg">Room {currentRoom}</CardTitle>
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-lg">Room {currentRoom}</CardTitle>
+                  {isPrivate ? (
+                    <Badge variant="outline" className="text-xs gap-1 border-orange-500/50 text-orange-500">
+                      <IconLock className="h-3 w-3" />
+                      Private
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-xs gap-1 border-green-500/50 text-green-500">
+                      <IconWorld className="h-3 w-3" />
+                      Public
+                    </Badge>
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">Multiplayer Battle</p>
               </div>
             </div>
-            <Button variant="outline" onClick={onLeaveRoom} className="shrink-0">
-              Leave Room
-            </Button>
+            <div className="flex items-center gap-2 shrink-0">
+              <Button variant="outline" size="sm" onClick={handleShare} className="gap-1.5">
+                {copied ? <IconCheck className="h-4 w-4 text-green-500" /> : <IconCopy className="h-4 w-4" />}
+                {copied ? 'Copied!' : 'Share'}
+              </Button>
+              <Button variant="outline" onClick={onLeaveRoom}>
+                Leave Room
+              </Button>
+            </div>
           </div>
         </CardHeader>
       </Card>

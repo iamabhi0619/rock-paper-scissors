@@ -12,8 +12,10 @@ function setupRoomHandlers(socket, io) {
   });
 
   // Room event handlers
-  socket.on("join_room", (roomId) => {
-    handleJoinRoom(socket, io, roomId);
+  socket.on("join_room", (data) => {
+    const roomId = typeof data === 'string' ? data : data?.roomId;
+    const isPrivate = typeof data === 'string' ? false : (data?.isPrivate ?? false);
+    handleJoinRoom(socket, io, roomId, isPrivate);
   });
 
   socket.on("leave_room", () => {

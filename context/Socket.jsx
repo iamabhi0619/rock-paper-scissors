@@ -45,9 +45,9 @@ function Socket({ children }) {
   // Enhanced actions that include state management
   const enhancedActions = {
     ...socketActions,
-    joinRoom: (roomId) => {
+    joinRoom: (roomId, isPrivate = false) => {
       clearMessages(); // Clear messages when joining new room
-      socketActions.joinRoom(roomId);
+      socketActions.joinRoom(roomId, isPrivate);
     },
     leaveRoom: () => {
       setCurrentRoom(null);

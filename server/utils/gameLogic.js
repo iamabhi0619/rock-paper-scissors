@@ -14,9 +14,10 @@ function getWinner(choice1, choice2) {
   return winConditions[choice1] === choice2 ? "player1" : "player2";
 }
 
-function createRoom(roomId, player1) {
+function createRoom(roomId, player1, isPrivate = false) {
   return {
     id: roomId,
+    isPrivate,
     players: {
       player1: {
         ...player1,

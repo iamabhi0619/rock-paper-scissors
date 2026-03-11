@@ -3,10 +3,9 @@
 import { useCallback } from "react";
 
 export function useSocketActions(socket) {
-  const joinRoom = useCallback((roomId) => {
+  const joinRoom = useCallback((roomId, isPrivate = false) => {
     if (socket) {
-      
-      socket.emit("join_room", roomId);
+      socket.emit("join_room", { roomId, isPrivate });
     } else {
     }
   }, [socket]);
