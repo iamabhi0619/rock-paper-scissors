@@ -19,18 +19,20 @@ export function useSocketConnection(user) {
           user: user,
         },
         transports: ["websocket", "polling"],
+        // Keep reconnection enabled (default) — let socket.io handle it
+        reconnection: true,
+        reconnectionDelay: 500,
+        reconnectionAttempts: Infinity,
       },
     );
 
     // Connection events
     newSocket.on("connect", () => {
       setConnected(true);
-      // console.log("Connected to game server");
     });
 
     newSocket.on("disconnect", () => {
       setConnected(false);
-      // console.log("Disconnected from game server");
     });
 
     newSocket.on("connect_error", (error) => {
@@ -43,8 +45,19 @@ export function useSocketConnection(user) {
 
     setSocket(newSocket);
 
+    // When the page becomes visible again (e.g. returning from share sheet or
+    // switching back from another app), ensure the socket is still connected.
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && !newSocket.connected) {
+        newSocket.connect();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     // Cleanup on unmount
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       newSocket.disconnect();
     };
   }, [user]);

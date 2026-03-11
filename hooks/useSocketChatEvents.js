@@ -13,11 +13,6 @@ export function useSocketChatEvents(socket) {
       setMessages((prev) => [...prev, message]);
     });
 
-    // Clear messages on disconnect
-    socket.on("disconnect", () => {
-      setMessages([]);
-    });
-
     return () => {
       socket.off("new_message");
     };

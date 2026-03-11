@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { IconUser, IconTrophy, IconUsers, IconSwords, IconLock, IconWorld, IconCopy, IconCheck } from '@tabler/icons-react';
+import { IconUser, IconTrophy, IconUsers, IconSwords, IconLock, IconWorld, IconCopy, IconCheck, IconShare } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import Icons from '@/components/utility/Icons';
 import { useUserStore } from '@/store/user';
@@ -21,9 +21,30 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
   const [copied, setCopied] = useState(false);
   const isPrivate = gameState?.isPrivate ?? false;
   
-  const handleShare = () => {
+  const handleShare = async () => {
     const base = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
     const url = `${base}?room=${currentRoom}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Join my Rock Paper Scissors game!',
+          text: `Join my room using code: ${currentRoom}`,
+          url,
+        });
+      } catch (err) {
+        // User dismissed share dialog — that's fine, no fallback needed
+        if (err.name !== 'AbortError') {
+          // Unexpected error — fall back to clipboard
+          copyToClipboard(url);
+        }
+      }
+    } else {
+      copyToClipboard(url);
+    }
+  };
+
+  const copyToClipboard = (url) => {
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       toast.success('Room link copied to clipboard!');
@@ -106,7 +127,7 @@ function RoomInfoSection({ currentRoom, gameState, onLeaveRoom }) {
             </div>
             <div className="flex items-center gap-2 shrink-0">
               <Button variant="outline" size="sm" onClick={handleShare} className="gap-1.5">
-                {copied ? <IconCheck className="h-4 w-4 text-green-500" /> : <IconCopy className="h-4 w-4" />}
+                {copied ? <IconCheck className="h-4 w-4 text-green-500" /> : <IconShare className="h-4 w-4" />}
                 {copied ? 'Copied!' : 'Share'}
               </Button>
               <Button variant="outline" onClick={onLeaveRoom}>

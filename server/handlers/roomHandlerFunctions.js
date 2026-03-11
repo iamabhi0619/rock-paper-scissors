@@ -101,7 +101,7 @@ function handleLeaveRoom(socket) {
       socket.currentRoom,
       socket.user._id,
     );
-    
+
     if (result && !result.deleted) {
       // Notify other player
       socket.broadcast.to(socket.currentRoom).emit("player_left", {
@@ -110,6 +110,8 @@ function handleLeaveRoom(socket) {
       });
     }
 
+    // Confirm leave to the player who left
+    socket.emit("room_left", { message: "Left room successfully." });
     socket.currentRoom = null;
   }
 }

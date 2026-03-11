@@ -31,6 +31,7 @@ function Socket({ children }) {
     availableRooms,
     setCurrentRoom,
     setGameState,
+    clearPendingRejoin,
   } = useSocketRoomEvents(socket);
 
   // Game events
@@ -50,6 +51,7 @@ function Socket({ children }) {
       socketActions.joinRoom(roomId, isPrivate);
     },
     leaveRoom: () => {
+      clearPendingRejoin(); // Cancel auto-rejoin so we don't re-enter after intentional leave
       setCurrentRoom(null);
       setGameState(null);
       clearMessages();
