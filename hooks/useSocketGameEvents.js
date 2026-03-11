@@ -47,15 +47,8 @@ export function useSocketGameEvents(socket, user, setGameState) {
       // console.log("Game restarted:", data.message);
     });
 
-    socket.on("game_reset_timeout", (data) => {
-      console.log("Game rest..!!");
-      setGameState(data.room);
-      toast.warning(data.message, {
-        duration: 5000,
-        description: "All scores have been reset. Starting fresh!"
-      });
-      // console.log("Game reset due to timeout:", data);
-    });
+    // game_reset_timeout is no longer emitted by the server;
+    // timeouts are now processed as a forfeited round via round_result (timeout: true)
 
     socket.on("game_error", (data) => {
       toast.error(data.message);
@@ -69,7 +62,6 @@ export function useSocketGameEvents(socket, user, setGameState) {
       socket.off("game_state_updated");
       socket.off("game_finished");
       socket.off("game_restarted");
-      socket.off("game_reset_timeout");
       socket.off("game_error");
     };
   }, [socket, user, setGameState]);
